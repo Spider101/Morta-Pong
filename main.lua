@@ -130,7 +130,7 @@ game = entity:new({
         local starting_y = self.enemy.y + (self.enemy.height / 2)
 
         -- set the ball's initial direction to be towards the player and a random direction in the y axis
-        local direction_x = -1
+        local direction_x = self.ball.dx > 0 and -1 or 1
         local direction_y = rnd(2) > 1 and 1 or -1
 
         self.ball:init(starting_x, starting_y, direction_x, direction_y)
