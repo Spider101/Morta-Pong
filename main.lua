@@ -7,7 +7,8 @@ game_states = {
 }
 game = entity:new({
     score = 0,
-    screen_boundary = 128,
+    screen_boundary_x = 120, -- adjusted for right wall sprite thickness
+    screen_boundary_y = 128,
     frames_after_serve = 0,
     collision_frame_threshold = 2,
     build = function(self, ball, player, enemy)
@@ -110,13 +111,13 @@ game = entity:new({
 
         -- bounce ball in x axis if it collides with player paddle or right screen boundary
         if paddle_intersect(player_paddle_boundaries, true)
-            or ball_boundaries.right >= self.screen_boundary then
+            or ball_boundaries.right >= self.screen_boundary_x then
             self.ball:bounce_x()
         end
 
         -- ball collision with top and bottom screen boundaries
         if ball_boundaries.top <= 0
-                or ball_boundaries.bottom >= self.screen_boundary then
+                or ball_boundaries.bottom >= self.screen_boundary_x then
             self.ball:bounce_y()
         end
 
@@ -168,7 +169,7 @@ game = entity:new({
             self.enemy:draw()
 
             -- draw score in top right corner of screen
-            print("score: " .. self.score, self.screen_boundary - 40, 5, 7)
+            print("score: " .. self.score, self.screen_boundary_x - 40, 5, 7)
 
             -- draw player health in top left corner of screen
             print("health: " .. self.player.health, 5, 5, 7)
