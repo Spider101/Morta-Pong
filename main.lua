@@ -1,6 +1,6 @@
 -- game state
 game_states = {
-    start = "start",
+    start = "start", -- TODO: implement game start logic
     serve = "serve",
     play = "play",
     done = "done"
