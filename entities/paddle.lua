@@ -1,5 +1,5 @@
 -- paddle definition
-block_size = 8
+local block_size = 8
 
 paddle = entity:new({
     width = block_size / 2,
@@ -13,7 +13,7 @@ paddle = entity:new({
         self.velocity = self.speed
     end,
     decel = function(self)
-        displacement = self.y + self.velocity
+        local displacement = self.y + self.velocity
         self.y = mid(0, displacement, game.screen_boundary - self.height)
         if self.velocity > 0 then
             self.velocity = max(0, self.velocity - self.brake_rate)
