@@ -90,7 +90,6 @@ game = entity:new({
 
         -- ball goes past left screen boundary
         if ball_boundaries.left <= 0 then
-            -- self.state = game_states.done
             self.player:decrease_health()
             self:reset_elements()
         end
