@@ -42,20 +42,20 @@ game = entity:new({
         end
     end,
     check_collisions = function(self)
-        ball_boundaries = {
+        local ball_boundaries = {
             left = self.ball.x + self.ball.dx - self.ball.size,
             right = self.ball.x + self.ball.dx + self.ball.size,
             top = self.ball.y + self.ball.dy - self.ball.size,
             bottom = self.ball.y + self.ball.dy + self.ball.size
         }
 
-        player_paddle_boundaries = {
+        local player_paddle_boundaries = {
             right = self.player.x + self.player.width,
             top = self.player.y,
             bottom = self.player.y + self.player.height
         }
 
-        enemy_paddle_boundaries = {
+        local enemy_paddle_boundaries = {
             left = self.enemy.x,
             top = self.enemy.y,
             bottom = self.enemy.y + self.enemy.height
