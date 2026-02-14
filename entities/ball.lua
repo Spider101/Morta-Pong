@@ -1,13 +1,15 @@
 -- ball entity
 ball = entity:new({
-    dx = 2,
-    dy = 3,
+    dx = 1.5,
+    dy = 2,
     size = 2,
     color = 7,
 
-    init = function(self, screen_center)
-        self.x = screen_center - (self.size / 2)
-        self.y = screen_center - (self.size / 2)
+    init = function(self, x, y, direction_x, direction_y)
+        self.x = x - (self.size / 2)
+        self.y = y - (self.size / 2)
+        self.dx = self.dx * direction_x
+        self.dy = self.dy * direction_y
     end,
     move = function(self)
         self.x += self.dx
