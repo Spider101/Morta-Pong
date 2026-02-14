@@ -69,6 +69,7 @@ enemy_paddle = paddle:new({
     end,
     speed = 1,
     color = 4,
+    health = 5,
     move = function(self)
         -- move the enemy paddle up and down depending on its current velocity
         if self.velocity > 0 then
