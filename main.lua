@@ -52,11 +52,6 @@ game = entity:new({
             self.frames_after_serve = 0
             self:reset_ball()
 
-            -- x button to serve the ball
-            if btn(5) then
-                self.state = game_states.play
-            end
-
             -- check for win/lose conditions
             if self.player.health <= 0 then
                 self.finish_reason = "lose"
@@ -65,6 +60,11 @@ game = entity:new({
             if self.score >= self.enemy.health then
                 self.finish_reason = "win"
                 self.state = game_states.done
+            end
+
+            -- x button to serve the ball
+            if btn(5) then
+                self.state = game_states.play
             end
         elseif self.state == game_states.play then
             self.ball:move()
