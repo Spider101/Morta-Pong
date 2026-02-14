@@ -2,9 +2,9 @@ pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
 #include oop/class.lua
-#include main.lua
 #include entities/paddle.lua
 #include entities/ball.lua
+#include main.lua
 
 function _init()
     game:build(ball, player_paddle, enemy_paddle)
