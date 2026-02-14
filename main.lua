@@ -36,7 +36,8 @@ game = entity:new({
                 self.state = game_states.done
             end
 
-            if btn(❎) then
+            -- x button to serve the ball
+            if btn(5) then
                 self.state = game_states.play
             end
         end
