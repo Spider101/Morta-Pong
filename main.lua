@@ -26,12 +26,12 @@ game = entity:new({
             self.ball:move()
             self:check_collisions()
         elseif self.state == game_states.serve then
+            -- check for win/lose conditions
             if self.player.health <= 0 then
                 self.finish_reason = "lose"
                 self.state = game_states.done
             end
-
-            if self.score >= 5 then
+            if self.score >= self.enemy.health then
                 self.finish_reason = "win"
                 self.state = game_states.done
             end
