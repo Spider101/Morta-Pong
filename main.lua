@@ -65,8 +65,6 @@ game = entity:new({
         if ball_boundaries.left <= player_paddle_boundaries.right
                 and ball_boundaries.bottom >= player_paddle_boundaries.top
                 and ball_boundaries.top <= player_paddle_boundaries.bottom then
-            -- printh("ball_boundaries.left: " .. ball_boundaries.left, "log", true)
-            -- stop()
             self.ball:bounce_x()
         end
 
