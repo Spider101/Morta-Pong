@@ -142,6 +142,7 @@ game = entity:new({
         local starting_x = self.enemy.x - self.ball.size
         local starting_y = self.enemy.y + (self.enemy.height / 2)
 
+        -- TODO: ensure the velocity logic happens only in the play -> serve transition when the FSM is fleshed out
         -- set the ball's initial direction to be towards the player and a random direction in the y axis
         local direction_x = self.ball.dx > 0 and -1 or 1
         local direction_y = rnd(2) > 1 and 1 or -1
