@@ -1,6 +1,6 @@
 -- game state
 game_states = {
-    start = "start", -- TODO: implement game start logic
+    start = "start",
     serve = "serve",
     play = "play",
     done = "done"
@@ -13,19 +13,31 @@ game = entity:new({
         self.player = player
         self.enemy = enemy
 
-        self.state = game_states.serve
-        self.ball:init(self.screen_boundary / 2)
+        self.state = game_states.start
         self.player:init()
         self.enemy:init()
     end,
     update = function(self)
+        -- rudimentary FSM for game state management
+        if self.state == game_states.start then
+            -- z button to start the game
+            if btn(4) then
+                self.state = game_states.serve
+            end
+            return
+
+         -- both serve and play move paddles
+        self.enemy:move()
         self.player:move()
 
-        if self.state == game_states.play then
-            self.enemy:move()
-            self.ball:move()
-            self:check_collisions()
         elseif self.state == game_states.serve then
+            self:reset_ball()
+
+            -- x button to serve the ball
+            if btn(5) then
+                self.state = game_states.play
+            end
+
             -- check for win/lose conditions
             if self.player.health <= 0 then
                 self.finish_reason = "lose"
@@ -35,11 +47,9 @@ game = entity:new({
                 self.finish_reason = "win"
                 self.state = game_states.done
             end
-
-            -- x button to serve the ball
-            if btn(5) then
-                self.state = game_states.play
-            end
+        elseif self.state == game_states.play then
+            self.ball:move()
+            self:check_collisions()
         end
     end,
     check_collisions = function(self)
@@ -98,7 +108,8 @@ game = entity:new({
         -- ball goes past left screen boundary
         if ball_boundaries.left <= 0 then
             self.player:decrease_health()
-            self:reset_elements()
+            self.state = game_states.serve
+            -- TODO: animate player damage
         end
     end,
     reset_ball = function(self)
@@ -116,9 +127,19 @@ game = entity:new({
         if self.state == game_states.done then
             self:draw_game_over_screen()
         else
+            -- draw instructions in the center of the screen during game start state
+            if self.state == game_states.start then
+                print("press ▥ to start", 32, 56, 7)
+            end
+
+            -- draw the ball when in serve or play states
+            if self.state == game_states.serve or self.state == game_states.play then
+                self.ball:draw()
+            end
+
+            -- draw all other game elements and UI
             self.player:draw()
             self.enemy:draw()
-            self.ball:draw()
 
             -- draw score in top right corner of screen
             print("score: " .. self.score, self.screen_boundary - 40, 5, 7)
