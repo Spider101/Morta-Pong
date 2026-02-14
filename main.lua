@@ -8,6 +8,8 @@ game_states = {
 game = entity:new({
     score = 0,
     screen_boundary = 128,
+    frames_after_serve = 0,
+    collision_frame_threshold = 2,
     build = function(self, ball, player, enemy)
         self.ball = ball
         self.player = player
@@ -24,13 +26,17 @@ game = entity:new({
             if btn(4) then
                 self.state = game_states.serve
             end
+
+            -- early return to avoid updating anything else in the start state
             return
+        end
 
          -- both serve and play move paddles
         self.enemy:move()
         self.player:move()
 
-        elseif self.state == game_states.serve then
+        if self.state == game_states.serve then
+            self.frames_after_serve = 0
             self:reset_ball()
 
             -- x button to serve the ball
@@ -49,7 +55,12 @@ game = entity:new({
             end
         elseif self.state == game_states.play then
             self.ball:move()
+
             self:check_collisions()
+
+            if self.frames_after_serve <= self.collision_frame_threshold then
+                self.frames_after_serve += 1
+            end
         end
     end,
     check_collisions = function(self)
@@ -99,7 +110,8 @@ game = entity:new({
         -- serve reset conditions below --
 
         -- ball collision with enemy paddle
-        if paddle_intersect(enemy_paddle_boundaries, false) then
+        if paddle_intersect(enemy_paddle_boundaries, false)
+            and self.frames_after_serve > self.collision_frame_threshold then
             self.score += 1
             self.state = game_states.serve
             -- TODO: animate enemy damage
