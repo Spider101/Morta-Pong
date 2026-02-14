@@ -14,7 +14,7 @@ paddle = entity:new({
     end,
     decel = function(self)
         local displacement = self.y + self.velocity
-        self.y = mid(0, displacement, game.screen_boundary - self.height)
+        self.y = mid(0, displacement, game.screen_boundary_y - self.height)
         if self.velocity > 0 then
             self.velocity = max(0, self.velocity - self.brake_rate)
         elseif self.velocity < 0 then
@@ -34,6 +34,7 @@ paddle = entity:new({
 
 -- specialized paddle entities for player and enemy
 player_paddle = paddle:new({
+    width = block_size,
     speed = 3,
     color = 2,
     health = 3,
@@ -42,6 +43,14 @@ player_paddle = paddle:new({
     end,
     decrease_health = function(self)
         self.health -= 1
+    end,
+    draw=function (self)
+        spr(8, self.x, self.y)
+        spr(9, self.x, self.y + block_size)
+        spr(10, self.x, self.y + (block_size * 2))
+        spr(16, self.x + block_size, self.y)
+        spr(17, self.x + block_size, self.y + block_size)
+        spr(18, self.x + block_size, self.y + (block_size * 2))
     end,
     move = function(self)
         if btn(2) then
@@ -56,8 +65,9 @@ player_paddle = paddle:new({
 })
 
 enemy_paddle = paddle:new({
+    width = block_size,
     init = function(self)
-        self.x = game.screen_boundary - (block_size / 2)
+        self.x = game.screen_boundary_x
         self.y = block_size * 6.5
 
         -- set a random initial velocity for the enemy paddle
@@ -70,6 +80,13 @@ enemy_paddle = paddle:new({
     speed = 1,
     color = 4,
     health = 5,
+    draw = function(self)
+        spr(15, self.x, self.y - block_size)
+        spr(11, self.x, self.y)
+        spr(12, self.x, self.y + block_size)
+        spr(13, self.x, self.y + (block_size * 2))
+        spr(14, self.x, self.y + (block_size * 3))
+    end,
     move = function(self)
         -- move the enemy paddle up and down depending on its current velocity
         if self.velocity > 0 then
@@ -82,7 +99,7 @@ enemy_paddle = paddle:new({
         -- reverse enemy paddle direction if it hits the screen boundaries
         if self.y <= 0 then
             self.velocity = self.speed
-        elseif (self.y + self.height) >= game.screen_boundary then
+        elseif (self.y + self.height) >= game.screen_boundary_y then
             self.velocity = self.speed * -1
         end
     end
