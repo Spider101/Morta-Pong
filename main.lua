@@ -31,6 +31,19 @@ game = entity:new({
             return
         end
 
+        if self.state == game_states.done then
+            -- z button to reset the game
+            if btn(4) then
+                self.score = 0
+                self.player.health = 3
+                self.enemy.health = 5
+                self.state = game_states.start
+            end
+
+            -- early return to avoid updating anything else in the done state
+            return
+         end
+
          -- both serve and play move paddles
         self.enemy:move()
         self.player:move()
