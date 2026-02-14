@@ -62,19 +62,22 @@ game = entity:new({
             bottom = self.enemy.y + self.enemy.height
         }
 
-        -- ball collision with player paddle
-        if ball_boundaries.left <= player_paddle_boundaries.right
-                and ball_boundaries.bottom >= player_paddle_boundaries.top
-                and ball_boundaries.top <= player_paddle_boundaries.bottom then
-            self.ball:bounce_x()
+        local function paddle_intersect(pad, is_player)
+            if is_player then
+                return ball_boundaries.left <= pad.right
+                    and ball_boundaries.bottom >= pad.top
+                    and ball_boundaries.top <= pad.bottom
+            else
+                return ball_boundaries.right >= pad.left
+                    and ball_boundaries.bottom >= pad.top
+                    and ball_boundaries.top <= pad.bottom
+            end
         end
 
-        -- ball collision with enemy paddle
-        if ball_boundaries.right >= enemy_paddle_boundaries.left
-                and ball_boundaries.bottom >= enemy_paddle_boundaries.top
-                and ball_boundaries.top <= enemy_paddle_boundaries.bottom then
-            self.score += 1
-            self:reset_elements()
+        -- bounce ball in x axis if it collides with player paddle or right screen boundary
+        if paddle_intersect(player_paddle_boundaries, true)
+            or ball_boundaries.right >= self.screen_boundary then
+            self.ball:bounce_x()
         end
 
         -- ball collision with top and bottom screen boundaries
@@ -83,9 +86,13 @@ game = entity:new({
             self.ball:bounce_y()
         end
 
-        -- ball collision with right screen boundary only
-        if ball_boundaries.right >= self.screen_boundary then
-            self.ball:bounce_x()
+        -- serve reset conditions below --
+
+        -- ball collision with enemy paddle
+        if paddle_intersect(enemy_paddle_boundaries, false) then
+            self.score += 1
+            self.state = game_states.serve
+            -- TODO: animate enemy damage
         end
 
         -- ball goes past left screen boundary
