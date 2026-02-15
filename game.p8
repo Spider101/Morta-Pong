@@ -6,6 +6,14 @@ __lua__
 #include entities/ball.lua
 #include main.lua
 
+-- allows for async functionality using cocreate and coresume --
+routines = {}
+
+function async(fn)
+    add(routines, cocreate(fn))
+end
+---
+
 function _init()
     game:build(ball, player_paddle, enemy_paddle)
 end
@@ -17,7 +25,16 @@ end
 function _draw()
     cls()
     map()
-    
+
+    -- update and draw any active animation routines
+    for routine in all(routines) do
+        if costatus(routine) == "dead" then
+            del(routines, routine)
+        else
+            coresume(routine)
+        end
+    end
+
     if game.state == game_states.start then
         game:draw_start_screen()
     elseif game.state == game_states.done then
