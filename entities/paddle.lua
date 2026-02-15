@@ -40,17 +40,24 @@ player_paddle = paddle:new({
     health = 3,
     init = function(self)
         self.y = block_size * 6.5
+
+        -- set up sprite data (relative x, y, sprite numbers) for the player paddle
+        self.sprite_data = {
+            { x = 0, y = 0, sprite_num = 8 },
+            { x = 0, y = block_size, sprite_num = 9 },
+            { x = 0, y = block_size * 2, sprite_num = 10 },
+            { x = block_size, y = 0, sprite_num = 16 },
+            { x = block_size, y = block_size, sprite_num = 17 },
+            { x = block_size, y = block_size * 2, sprite_num = 18 }
+        }
     end,
     decrease_health = function(self)
         self.health -= 1
     end,
     draw=function (self)
-        spr(8, self.x, self.y)
-        spr(9, self.x, self.y + block_size)
-        spr(10, self.x, self.y + (block_size * 2))
-        spr(16, self.x + block_size, self.y)
-        spr(17, self.x + block_size, self.y + block_size)
-        spr(18, self.x + block_size, self.y + (block_size * 2))
+        for sprite in all(self.sprite_data) do
+            spr(sprite.sprite_num, self.x + sprite.x, self.y + sprite.y)
+        end
     end,
     move = function(self)
         if btn(2) then
@@ -76,16 +83,23 @@ enemy_paddle = paddle:new({
         else
             self.velocity = self.speed * -1
         end
+
+        -- set up sprite data (relative x, y, sprite numbers) for the enemy paddle
+        self.sprite_data = {
+            { x = 0, y = 0, sprite_num = 11 },
+            { x = 0, y = block_size, sprite_num = 12 },
+            { x = 0, y = block_size * 2, sprite_num = 13 },
+            { x = 0, y = block_size * 3, sprite_num = 14 },
+            { x = 0, y = -1 * block_size, sprite_num = 15 },
+        }
     end,
     speed = 1,
     color = 4,
     health = 5,
     draw = function(self)
-        spr(15, self.x, self.y - block_size)
-        spr(11, self.x, self.y)
-        spr(12, self.x, self.y + block_size)
-        spr(13, self.x, self.y + (block_size * 2))
-        spr(14, self.x, self.y + (block_size * 3))
+        for sprite in all(self.sprite_data) do
+            spr(sprite.sprite_num, self.x + sprite.x, self.y + sprite.y)
+        end
     end,
     move = function(self)
         -- move the enemy paddle up and down depending on its current velocity
