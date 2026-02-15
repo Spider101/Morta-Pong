@@ -151,32 +151,21 @@ game = entity:new({
         self.ball:init(starting_x, starting_y, direction_x, direction_y)
     end,
     draw_elements = function(self)
-        if self.state == game_states.done then
-            self:draw_game_over_screen()
-        else
-            -- draw instructions in the center of the screen during game start state
-            if self.state == game_states.start then
-                print("press ▥ to start", 32, 56, 7)
-            end
+        self.ball:draw()
+        self.player:draw()
+        self.enemy:draw()
 
-            -- draw the ball when in serve or play states
-            if self.state == game_states.serve or self.state == game_states.play then
-                self.ball:draw()
-            end
+        -- draw score in top right corner of screen
+        print("score: " .. self.score, self.screen_boundary_x - 40, 5, 7)
 
-            -- draw all other game elements and UI
-            self.player:draw()
-            self.enemy:draw()
-
-            -- draw score in top right corner of screen
-            print("score: " .. self.score, self.screen_boundary_x - 40, 5, 7)
-
-            -- draw player health in top left corner of screen
-            print("health: " .. self.player.health, 5, 5, 7)
-        end
+        -- draw player health in top left corner of screen
+        print("health: " .. self.player.health, 5, 5, 7)
+    -- end
+    end,
+    draw_start_screen = function(self)
+        print("press ▥ to start", 32, 56, 7)
     end,
     draw_game_over_screen = function(self)
-        cls()
         if self.finish_reason == "win" then
             print("you win!", 44, 56, 7)
         else
