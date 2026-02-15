@@ -6,11 +6,28 @@ paddle = entity:new({
     height = block_size * 3,
     velocity = 0,
     brake_rate = 0.6,
+    damage_flash_frames = 10,
     move_up = function(self)
         self.velocity = self.speed * -1
     end,
     move_down = function(self)
         self.velocity = self.speed
+    end,
+    animate_hit = function(self)
+        async(function()
+            local original_x = self.x
+            local jitter_distance = 2
+
+            -- jitter the paddle in the x-axis (ease-out)
+            for i = 1, self.damage_flash_frames do
+                local jitter_strength = 1 - i/self.damage_flash_frames
+                local jitter_offset = flr(rnd(jitter_distance) - 1) * jitter_strength
+                self.x = original_x + jitter_offset
+                yield()
+            end
+
+            self.x = original_x
+        end)
     end,
     decel = function(self)
         local displacement = self.y + self.velocity

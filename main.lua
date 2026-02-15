@@ -127,15 +127,15 @@ game = entity:new({
         if paddle_intersect(enemy_paddle_boundaries, false)
             and self.frames_after_serve > self.collision_frame_threshold then
             self.score += 1
+            self.enemy:animate_hit()
             self.state = game_states.serve
-            -- TODO: animate enemy damage
         end
 
         -- ball goes past left screen boundary
         if ball_boundaries.left <= 0 then
             self.player:decrease_health()
+            self.player:animate_hit()
             self.state = game_states.serve
-            -- TODO: animate player damage
         end
     end,
     reset_ball = function(self)
