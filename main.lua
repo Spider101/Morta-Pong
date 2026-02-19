@@ -69,6 +69,7 @@ game = entity:new({
             end
         elseif self.state == game_states.play then
             self.ball:move()
+            self.ball.trail:tick()
 
             if self.frames_after_serve <= self.collision_frame_threshold then
                 self.frames_after_serve += 1
@@ -78,10 +79,12 @@ game = entity:new({
         end
     end,
     check_collisions = function(self)
+        -- adding the speed in order to check for collisions in the next frame,
+        -- otherwise the ball can clip through objects if it's moving fast enough
         local ball_boundaries = {
-            left = self.ball.x + self.ball.dx - self.ball.size,
+            left = self.ball.x + self.ball.dx,
             right = self.ball.x + self.ball.dx + self.ball.size,
-            top = self.ball.y + self.ball.dy - self.ball.size,
+            top = self.ball.y + self.ball.dy,
             bottom = self.ball.y + self.ball.dy + self.ball.size
         }
 
@@ -117,7 +120,7 @@ game = entity:new({
 
         -- ball collision with top and bottom screen boundaries
         if ball_boundaries.top <= 0
-                or ball_boundaries.bottom >= self.screen_boundary_x then
+                or ball_boundaries.bottom >= self.screen_boundary_y then
             self.ball:bounce_y()
         end
 
@@ -140,7 +143,7 @@ game = entity:new({
     end,
     reset_ball = function(self)
         -- reset ball position to be in front of enemy paddle
-        local starting_x = self.enemy.x - self.ball.size
+        local starting_x = self.enemy.x
         local starting_y = self.enemy.y + (self.enemy.height / 2)
 
         -- TODO: ensure the velocity logic happens only in the play -> serve transition when the FSM is fleshed out
