@@ -2,6 +2,8 @@
 ball = entity:new({
     dx = 1.5,
     dy = 2,
+    -- block_size is a local variable in paddle.lua, not sure how this is working
+    -- TODO: make it global constant
     size = block_size,
     trail = particle_trail,
     dust_cloud = dust,
