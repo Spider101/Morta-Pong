@@ -70,6 +70,7 @@ game = entity:new({
         elseif self.state == game_states.play then
             self.ball:move()
             self.ball.trail:tick()
+            self.ball.dust_cloud:tick()
 
             if self.frames_after_serve <= self.collision_frame_threshold then
                 self.frames_after_serve += 1
