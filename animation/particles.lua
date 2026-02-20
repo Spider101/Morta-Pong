@@ -48,7 +48,10 @@ particle_composition = entity:new({
             type = p_config.type,
             x = p_config.x,
             y = p_config.y,
+            dx = p_config.dx or 0,
+            dy = p_config.dy or 0,
             color = p_config.color,
+            size = p_config.size or 1,
             max_frames = p_config.lifespan,
             frames = 0
         })
@@ -66,6 +69,8 @@ particle_composition = entity:new({
         for p in all(self.particles) do
             if p.type == PARTICLE_TYPE.DOT then
                 pset(p.x, p.y, p.color)
+            elseif p.type == PARTICLE_TYPE.CIRCLE then
+                circfill(p.x, p.y, p.size, p.color)
             end
         end
     end,
