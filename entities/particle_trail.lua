@@ -2,7 +2,7 @@
 particle_trail = particle_composition:new({
     strength = 5,
     min_frames = 10,
-    get_particle_coords = particle_factory[PARTICLE_COMPOSITE.TRAIL],
+    get_particle_coords = particle_factory[PARTICLE_COMPOSITE.COMET],
     color_gradient = { 9, 15 },
     get_color_from_age = function(self, age)
         -- simple color fading logic based on particle age
@@ -22,7 +22,7 @@ particle_trail = particle_composition:new({
 
             local frame_offset = rnd(self.min_frames)
             self:add_particle({
-                type = PARTICLE_TYPE.DOT, -- type can be used to determine how to draw the particle in the composition's draw method
+                type = PARTICLE_TYPE.DOT,
                 x = particle_coords.x,
                 y = particle_coords.y,
                 color = self:get_color_from_age(0),

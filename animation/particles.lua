@@ -8,7 +8,7 @@ PARTICLE_TYPE = Enum(
 
 -- enum for particle composites
 PARTICLE_COMPOSITE = Enum(
-    "TRAIL",
+    "COMET",
     "RING",
     "EXPLOSION"
 )
@@ -20,13 +20,22 @@ particle = entity:new({
 })
 
 particle_factory = {
-    [PARTICLE_COMPOSITE.TRAIL] = function(origin_x, origin_y, radius)
+    [PARTICLE_COMPOSITE.COMET] = function(origin_x, origin_y, radius)
+        -- random point within a circle of given radius translated from the origin
         local angle = rnd()
         local offset_x = cos(angle) * radius
         local offset_y = sin(angle) * radius
         return {
             x = origin_x + offset_x,
             y = origin_y + offset_y
+        }
+    end,
+    [PARTICLE_COMPOSITE.EXPLOSION] = function()
+        -- random point within a circle of radius 1 around the origin
+        local angle = rnd()
+        return {
+            x = cos(angle),
+            y = sin(angle)
         }
     end
 }
