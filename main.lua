@@ -174,11 +174,21 @@ game = entity:new({
         print("press ▥ to start", 32, 56, 7)
     end,
     draw_game_over_screen = function(self)
+        local mid_screen_y = self.screen_boundary_y / 2
+        local end_screen_height = 20
+        rectfill(0,
+            mid_screen_y - end_screen_height / 2,
+            self.screen_boundary_x,
+            mid_screen_y + end_screen_height / 2,
+            0)
+
         if self.finish_reason == "win" then
-            print("you win!", 44, 56, 7)
+            print("congratulations, you won!", 16, 58, 7)
         else
-            print("you lose!", 40, 56, 7)
+            print("game over!", 44, 58, 7)
         end
+
+        print("press ▥ to restart", 28, 66, 7)
     end
 })
 
