@@ -163,10 +163,11 @@ game = entity:new({
         self.enemy:draw()
 
         -- draw score in top right corner of screen
-        print("score: " .. self.score, self.screen_boundary_x - 40, 5, 7)
+        print("score: " .. self.score, self.screen_boundary_x - 40, 2.5, 12)
 
         -- draw player health in top left corner of screen
-        print("health: " .. self.player.health, 5, 5, 7)
+        draw_health_ui(self.player.health)
+        -- print("health: " .. self.player.health, 5, 5, 7)
     -- end
     end,
     draw_start_screen = function(self)
@@ -180,3 +181,13 @@ game = entity:new({
         end
     end
 })
+
+--- utility functions
+function draw_health_ui(health)
+    for i = 1, health do
+        local sprite_pad = 2
+        local health_icon_x = 10 + (i - 1) * (block_size + sprite_pad)
+        local health_icon_y = 2.5
+        spr(32, health_icon_x, health_icon_y)
+    end
+end
