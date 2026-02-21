@@ -7,7 +7,7 @@ game_states = {
 }
 game = entity:new({
     score = 0,
-    screen_boundary_x = 120, -- adjusted for right wall sprite thickness
+    screen_boundary_x = 128,
     screen_boundary_y = 128,
     frames_after_serve = 0,
     collision_frame_threshold = 2,
@@ -113,9 +113,12 @@ game = entity:new({
             end
         end
 
-        -- bounce ball in x axis if it collides with player paddle or right screen boundary
+        -- use enemy paddle width as proxy for the right wall thickness since they use the same sprite
+        local right_wall_x = self.screen_boundary_x - self.enemy.width
+
+        -- bounce ball in x axis if it collides with player paddle or right wall
         if paddle_intersect(player_paddle_boundaries, true)
-            or ball_boundaries.right >= self.screen_boundary_x then
+            or ball_boundaries.right >= right_wall_x then
             self.ball:bounce_x()
         end
 
