@@ -5,6 +5,7 @@ ball = entity:new({
     -- block_size is a local variable in paddle.lua, not sure how this is working
     -- TODO: make it global constant
     size = block_size,
+    sprite_index = 16,
     trail = particle_trail:new({}),
     dust_cloud = dust:new({}),
     init = function(self, ref_x, ref_y, direction_x, direction_y)
@@ -44,7 +45,7 @@ ball = entity:new({
         self.dy = -self.dy
     end,
     draw = function(self)
-        spr(23, self.x, self.y)
+        spr(self.sprite_index, self.x, self.y)
         self.trail:draw()
         self.dust_cloud:draw()
     end,
