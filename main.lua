@@ -163,7 +163,7 @@ game = entity:new({
         self.enemy:draw()
 
         -- draw score in top right corner of screen
-        print("score: " .. self.score, self.screen_boundary_x - 40, 2.5, 12)
+        draw_enemy_health_ui(self.score, self.enemy.health)
 
         -- draw player health in top left corner of screen
         draw_health_ui(self.player.health)
@@ -189,5 +189,24 @@ function draw_health_ui(health)
         local health_icon_x = 10 + (i - 1) * (block_size + sprite_pad)
         local health_icon_y = 2.5
         spr(32, health_icon_x, health_icon_y)
+    end
+end
+
+function draw_enemy_health_ui(score, health)
+    local sprite_x = 70
+    local sprite_y = 2.5
+    local empty_sprite_num = 36
+    local filled_sprite_num = 20
+
+    for i = 0, health - 1 do
+        sprite_x = sprite_x + block_size
+
+        -- draw the sprites left to right
+        -- replace filled sprite with empty sprite from right to left as score increases
+        if i >= (health - score) then
+            spr(empty_sprite_num+i, sprite_x, sprite_y)
+        else
+            spr(filled_sprite_num+i, sprite_x, sprite_y)
+        end
     end
 end
