@@ -90,8 +90,12 @@ player_paddle = paddle:new({
 
 enemy_paddle = paddle:new({
     width = block_size,
+    sprite_index = 1,
+    speed = 1,
+    color = 4,
+    health = 5,
     init = function(self)
-        self.x = game.screen_boundary_x
+        self.x = game.screen_boundary_x - self.width
         self.y = block_size * 6.5
 
         -- set a random initial velocity for the enemy paddle
@@ -100,23 +104,17 @@ enemy_paddle = paddle:new({
         else
             self.velocity = self.speed * -1
         end
-
-        -- set up sprite data (relative x, y, sprite numbers) for the enemy paddle
-        self.sprite_data = {
-            { x = 0, y = 0, sprite_num = 11 },
-            { x = 0, y = block_size, sprite_num = 12 },
-            { x = 0, y = block_size * 2, sprite_num = 13 },
-            { x = 0, y = block_size * 3, sprite_num = 14 },
-            { x = 0, y = -1 * block_size, sprite_num = 15 },
-        }
     end,
-    speed = 1,
-    color = 4,
-    health = 5,
     draw = function(self)
-        for sprite in all(self.sprite_data) do
-            spr(sprite.sprite_num, self.x + sprite.x, self.y + sprite.y)
-        end
+        -- offset the sprite y axis boundaries by one block size
+        -- to render the glow sprites without needing to change the collision boundaries of the paddle
+        local sprite_start_y = self.y - block_size
+        local sprite_end_y = self.height + block_size
+
+        -- use width to determine how many sprites to draw in x and y axis
+        local sprite_width = self.width / block_size
+        local sprite_height = 5
+        spr(self.sprite_index, self.x, sprite_start_y, sprite_width, sprite_height)
     end,
     move = function(self)
         -- move the enemy paddle up and down depending on its current velocity
