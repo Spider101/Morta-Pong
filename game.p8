@@ -27,7 +27,7 @@ function _update()
 end
 
 function _draw()
-    cls()
+    cls(1)
     map()
 
     -- update and draw any active animation routines
