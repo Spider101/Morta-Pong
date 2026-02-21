@@ -55,26 +55,15 @@ player_paddle = paddle:new({
     speed = 3,
     color = 2,
     health = 3,
+    sprite_index = 2,
     init = function(self)
         self.y = block_size * 6.5
-
-        -- set up sprite data (relative x, y, sprite numbers) for the player paddle
-        self.sprite_data = {
-            { x = 0, y = 0, sprite_num = 8 },
-            { x = 0, y = block_size, sprite_num = 9 },
-            { x = 0, y = block_size * 2, sprite_num = 10 },
-            { x = block_size, y = 0, sprite_num = 16 },
-            { x = block_size, y = block_size, sprite_num = 17 },
-            { x = block_size, y = block_size * 2, sprite_num = 18 }
-        }
     end,
     decrease_health = function(self)
         self.health -= 1
     end,
     draw=function (self)
-        for sprite in all(self.sprite_data) do
-            spr(sprite.sprite_num, self.x + sprite.x, self.y + sprite.y)
-        end
+        spr(self.sprite_index, self.x, self.y, 2, 3)
     end,
     move = function(self)
         if btn(2) then
